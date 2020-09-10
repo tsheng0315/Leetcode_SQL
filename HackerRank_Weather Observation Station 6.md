@@ -16,7 +16,7 @@ where city like 'a%' or city like 'e%' or  city like 'i%' or city like 'o%' or c
 Select City From Station WHERE LEFT(City,1) IN ('A','E','I','O','U')
 ```
 ### other 3 
-* regexp operator
+* regexp operator/ rlike
 ```mysql
 SELECT DISTINCT CITY FROM STATION
 WHERE CITY REGEXP '^[aeiou]'
