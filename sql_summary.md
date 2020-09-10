@@ -11,3 +11,12 @@ So instead of writing [bcdfghjklmnpqrstvwxyz], we can write [^aeiou]
 * `.` is representing one character 
 * `..` is representing two characters and so on 
 * `.*` is representing as many characters u want
+
+## order by 2 columns:
+* ordered first by column A than by column B.
+```mysql
+ORDER BY col_A, col_B
+```
+
+## substr/substring
+```SUBSTR/substring(str, pos, len)```
