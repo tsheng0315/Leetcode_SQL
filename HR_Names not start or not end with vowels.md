@@ -13,13 +13,21 @@ select distinct city from station where not left(city,1) in ('a','e','i','o','u'
 
 ### succeed 2
 * define a pattern for city names
-* regexp
+* not regexp '^[]' or not regexp '[]$'
 ```mysql
 select distinct city from station where not city regexp '^[aeiou]' or not city regexp '[aeiou]$'
 ```
-### others new
+
+## regexp ^
+Putting a `^` inside the closed bracket means make it match all characters EXCEPT the ones inside the bracket. 
+
+So instead of writing [bcdfghjklmnpqrstvwxyz], we can write [^aeiou]
+
+### others new 3
 * regexp+ |
+* regexp '^[^]' | regexp '[^]$' 
 ```mysql
 SELECT DISTINCT CITY FROM STATION
 WHERE CITY REGEXP '^[^aeiou]|[^aeiou]$'
 ```
+
