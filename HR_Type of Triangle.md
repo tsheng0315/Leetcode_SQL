@@ -19,8 +19,21 @@ select
 case 
   when A>=B+C or B>=A+C or C>=A+B then 'Not A Triangle'
   
-  when (A=B and B!=c) or (b=c and a!=b) or (a=c and b!=a) then 'Isosceles'
+  when (A=B and B!=c) or (b=c and a!=b) or (a=c and b!=a) then 'Isosceles'  # don't need this extra requirement aaccording to the description
   when A=B=C then 'Equilateral'
+  else 'Scalene'
+end
+from TRIANGLES
+```
+
+* failed 2
+```mysql
+select 
+case 
+  when A>=(B+C) or B>=(A+C) or C>=(A+B) then 'Not A Triangle'
+  when A=B=C then 'Equilateral'    # can't trible =?
+  when (A=B ) or (b=c ) or (a=c ) then 'Isosceles'
+
   else 'Scalene'
 end
 from TRIANGLES
