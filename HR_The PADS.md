@@ -2,15 +2,44 @@
 
 Generate the following two result sets:
 
-1. Query an alphabetically ordered list of all names in `OCCUPATIONS`, immediately followed by the first letter of each profession as a parenthetical (i.e.: enclosed in parentheses). For example: AnActorName(A), ADoctorName(D), AProfessorName(P), and ASingerName(S).
-2. Query the number of ocurrences of each occupation in `OCCUPATIONS`. Sort the occurrences in ascending order, and output them in the following format:
+1.1 Query: 
+
+Name in alphabetically order
+
+1.2 Followed by the first letter of each profession enclosed in parentheses
+
+* Eg: Actor Name(A), Doctor Name(D), Professor Name(P), Singer Name(S).
+
+2. Query:
+
+The number of ocurrences of each occupation in `OCCUPATIONS`. 
+
+Sort the occurrences in ascending order, and output them in the following format:
 
 `There are a total of [occupation_count] [occupation]s.`
-where [occupation_count] is the number of occurrences of an occupation in `OCCUPATIONS` and [occupation] is the lowercase occupation name. 
+
+* [occupation_count] is the number of records of an occupation in `OCCUPATIONS` 
+* [occupation] is the lowercase occupation name. 
 
 If more than one Occupation has the same [occupation_count], they should be ordered alphabetically.
 
 Note: There will be at least two entries in the table for each type of occupation.
-The `OCCUPATIONS` table is described as follows:  Occupation will only contain one of the following values: `Doctor`, `Professor`, `Singer` or `Actor`.
+In the `OCCUPATIONS` table, Occupation will only contain: `Doctor`, `Professor`, `Singer` or `Actor`.
 
 https://www.hackerrank.com/challenges/the-pads/problem?h_r=next-challenge&h_v=zen
+
+## my code
+failed 1
+* concat()
+* SUBSTRING(occupation, 1, 1)
+```mysql
+select name, concat("(",(SUBSTRING(occupation, 1, 1)),")") 
+from OCCUPATIONS
+order by name;
+
+select 
+concat("There are a total of ", count(occupation)," ", lower(occupation),"s.")
+from OCCUPATIONS
+group by occupation
+order by count(occupation), occupation
+```
