@@ -9,7 +9,27 @@ Note: Print `NULL` when there are no more names corresponding to an occupation.
 
 https://www.hackerrank.com/challenges/occupations/problem
 
-
+Input table:
+```
+Ashley Professor
+Samantha Actor
+Julia Doctor
+Britney Professor
+Maria Professor
+Meera Professor
+Priya Doctor
+Priyanka Professor
+Jennifer Actor
+Ketty Actor
+Belvet Professor
+Naomi Professor
+Jane Singer
+Jenny Singer
+Kristeen Singer
+Christeen Singer
+Eve Actor
+Aamina Doctor
+```
 
 ### my solution
 
@@ -35,3 +55,6 @@ case when OCCUPATION='Actor' then name end as Actor
 from  OCCUPATIONS
 order by Name  # new here
 ```
+
+
+
