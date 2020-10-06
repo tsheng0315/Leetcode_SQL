@@ -11,7 +11,7 @@ Leaf: If node is leaf node.
 Inner: If node is neither root nor leaf node.
 
 ### my code
-
+* failed 
 ```mysql
 select n,
 case 
@@ -24,7 +24,7 @@ from BST
 order by n
 ```
 
-### my code
+* succeed
 ```mysql
 select n,
 case 
@@ -40,3 +40,15 @@ order by n
 `... IN (SELECT P FROM BST)` is highly inefficient for big tables.
 
 `... WHERE P=B.N` uses a probable index.
+
+succeed 
+```mysql
+select n,
+case when p is null then 'Root'
+when n in (select b1.n from bst as b1,bst as b2 where b1.n=b2.p) then 'Inner'
+else 'Leaf'
+end
+as node
+from bst
+order by n
+```
