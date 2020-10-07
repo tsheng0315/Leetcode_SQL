@@ -32,13 +32,14 @@ https://www.geeksforgeeks.org/calculate-median-in-mysql/
 ```mysql
 set @rowindex=-1;
 
-SELECT
-  round(AVG(temp.lat_n),4) as Median 
-FROM
-
+select round(avg(temp.lat_n),4)
+from
 (SELECT @rowindex:=@rowindex + 1 AS rowindex, LAT_N
     FROM station
-    ORDER BY station.LAT_N) as temp
+    ORDER BY station.LAT_N )as temp
     
-    where temp.rowindex IN (FLOOR(@rowindex / 2), CEIL(@rowindex / 2));
+    where temp.rowindex in (floor(@rowindex/2),ceil(@rowindex/2))
+    
+    
+
  ```
