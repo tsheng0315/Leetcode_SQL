@@ -11,10 +11,10 @@ Query the median of the Northern Latitudes (`LAT_N`) from `STATION` and round yo
 
 ### Instruction: 
 
-https://levelup.gitconnected.com/calculating-median-in-mysql-fe0638a908c8
+
 
 ### my code
-* failed
+#### failed
 ```mysql
 set @median= count(lat_n);
 select round(MEDIAN(lat_n),4)
@@ -22,15 +22,16 @@ from station
 order by LAT_N
 limit 1 offset @median
 ```
+https://levelup.gitconnected.com/calculating-median-in-mysql-fe0638a908c8
 
 https://www.geeksforgeeks.org/calculate-median-in-mysql/
 
 * Beginning with the internal subquery – the select assigns @rowindex as an incremental index for each distance that is selected and sorts the distance.
-
 * Once we have the sorted list of distances, the outer query will fetch the middle items in the array. 
 * If the array contains an odd number of items, both values will be the single middle value.
 * return the average of two values as the median value.
 
+#### succeed 
 ```mysql
 set @rowindex=-1;
 
