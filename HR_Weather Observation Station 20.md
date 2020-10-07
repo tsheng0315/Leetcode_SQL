@@ -1,5 +1,7 @@
 ## Weather Observation Station 20
 
+* median
+
 https://www.hackerrank.com/challenges/weather-observation-station-20/problem?h_r=next-challenge&h_v=zen&h_r=next-challenge&h_v=zen&h_r=next-challenge&h_v=zen&h_r=next-challenge&h_v=zen&h_r=next-challenge&h_v=zen
 
 A `median` is defined as a number separating the higher half of a data set from the lower half. 
@@ -39,7 +41,4 @@ from
     ORDER BY station.LAT_N )as temp
     
     where temp.rowindex in (floor(@rowindex/2),ceil(@rowindex/2))
-    
-    
-
  ```
