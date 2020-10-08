@@ -8,11 +8,26 @@ You are given two tables: `Students` and `Grades`.
 
 * in descending order by grade -- higher grades are entered first. 
 
-* If there is more than one student with the same grade (8-10) assigned to them, order those particular students by their name alphabetically. 
-* don't show the `NAMES` of students who received a grade lower than 8. 
+* In grade (8-10), order students by name alphabetically. 
 
-*  if the grade is lower than 8, use "NULL" as their name and list them by their grades in descending order. 
+* In grade (1-7), use "NULL" as their name
 
-* If there is more than one student with the same grade (1-7) assigned to them, order those particular students by their marks in ascending order.
+* In grade (1-7), order students by their marks in ascending order.
 
-### 
+### my code
+```mysql
+select 
+(case when temp.grade>7 then name
+else "NULL" end ) as name, 
+temp.grade, temp.marks
+
+from
+(select students.name as name, grades.grade as grade , students.marks as marks
+from students, grades
+where students.marks between grades.min_mark and grades.max_mark) as temp
+
+order by  temp.grade desc, temp.name asc , temp.marks asc
+```
+
+
+
