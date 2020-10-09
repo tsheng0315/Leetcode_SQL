@@ -37,3 +37,11 @@ From (Students S
 Where P2.Salary > P1.Salary
 Order By P2.Salary;
 ```
+
+```mysql
+Select S.Name
+From Students S, Friends F ,Packages P1 ,  Packages P2
+where S.ID=F.ID and S.ID=P1.ID and F.Friend_ID=P2.ID and P2.Salary > P1.Salary
+
+Order By P2.Salary;
+```
