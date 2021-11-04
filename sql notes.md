@@ -65,9 +65,28 @@ limit 1，3  #from row 1 to row 3
 分别查询第n页，每页显示m个
 
 # [Window function](https://www.bilibili.com/video/BV1qg411u7m5/?spm_id_from=333.788.recommend_more_video.1)
-func  over (partition by (group by) order by, rows between )
+* 最好的好处是，不会改变行数
+* [window function & group by](https://zhuanlan.zhihu.com/p/92654574)
+* group by分组汇总后改变了表的行数，一行只有一个类别。而partiition by和rank函数不会减少原表中的行数
+
+* func  over (partition by <用于分组的列名> (group by) order by <用于排序的列名>, rows between )
+* partition by & order by:
+* partition 分组
+* order by 对分组后的结果进行排序
+* ![partition by & order by](https://github.com/tsheng0315/Leetcode_SQL/blob/master/image/partition%20by%20order%20by.jpg)
+
 
 [Leetcode 534 – Game Play Analysis III](https://circlecoder.com/game-play-analysis-III/)
+
+* window function:
+```sql
+
+```
+
+* join:
+```sql
+
+```
 
 # like 模糊查询
 ```sql
