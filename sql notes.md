@@ -1,22 +1,26 @@
-## where
+# where
 对行操作，不可与聚合函数连用
 
-## Join
+# Join
 ### cross join -> full join 
+```sql
 A: m
 B: n
 A cross join B: m* n
+```
+
+![leftJoin](https://github.com/tsheng0315/Leetcode_SQL/blob/master/image/leftJoinExample.jpg)
 
 ### inner join
 
 ### left join
 ### right join
 
-## group by
+# group by
 
 常与聚合函数一起使用，max(), min() average()，来处理组内数据
 
-## having
+# having
 对组内数据过滤，可与聚合函数连用
 
 
