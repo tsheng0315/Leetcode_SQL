@@ -1,0 +1,35 @@
+1555. Bank Account Summary
+
+WITH 
+out_flow AS
+(SELECT 
+ paid_by, sum(amount) as out_amo
+ FROM
+    Transactions
+ GROUP BY 
+    paid_by
+),
+
+in_flow AS
+(SELECT 
+ paid_to, sum(amount) as in_amo
+ FROM
+    Transactions
+  GROUP BY 
+    paid_to
+)
+
+SELECT u.user_id, u.user_name,
+(u.credit - ifnull(out_amo,0) + ifnull(in_amo,0) ) as credit,
+IF ( (u.credit - ifnull(out_amo,0) + ifnull(in_amo,0)) < 0, 'Yes','No') AS credit_limit_breached
+FROM
+   Users u
+LEFT JOIN 
+      in_flow i
+   ON
+      u.user_id = i.paid_to
+LEFT JOIN 
+      out_flow o
+   ON
+      u.user_id = o.paid_by
+GROUP BY u.user_id
