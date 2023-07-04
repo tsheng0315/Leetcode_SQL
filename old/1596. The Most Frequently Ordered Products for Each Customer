@@ -1,0 +1,14 @@
+WITH CTE AS(
+SELECT o.customer_id, o.product_id, p.product_name, #count(product_id),
+    rank() over(partition by o.customer_id order by (count(o.product_id)) desc) as rk
+FROM
+    Orders o
+LEFT JOIN 
+    Products p
+    ON
+    o.product_id = p.product_id
+GROUP BY  o.customer_id, o.product_id)
+
+SELECT customer_id, product_id, product_name
+FROM CTE
+WHERE rk = 1
