@@ -12,3 +12,22 @@ GROUP BY  o.customer_id, o.product_id)
 SELECT customer_id, product_id, product_name
 FROM CTE
 WHERE rk = 1
+
+
+
+with cte as (
+select 
+customer_id, product_id, count(product_id) as ct,
+rank() over(partition by customer_id order by count(product_id) desc) as rk
+FROM Orders
+group by customer_id, product_id ),
+
+cte2 as(
+select cte.customer_id, cte.product_id 
+from cte 
+where rk = 1)
+
+select cte2.customer_id ,cte2.product_id, p.product_name 
+from cte2 
+left join Products p
+on cte2.product_id = p.product_id
