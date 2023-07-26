@@ -1,0 +1,14 @@
+1613. Find the Missing IDs
+
+recursive cte + not in 
+WITH recursive cte AS(
+    SELECT 1 AS ids
+    UNION ALL
+    SELECT ids + 1 as ids
+    FROM cte
+    WHERE ids < (select max(customer_id) from Customers)
+)
+
+SELECT ids
+FROM cte
+WHERE ids not in (select customer_id from Customers)
