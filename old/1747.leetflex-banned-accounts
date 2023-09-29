@@ -1,0 +1,17 @@
+https://leetcode.com/problems/leetflex-banned-accounts/
+
+select
+  distinct account_id 
+  
+from
+(select 
+  account_id, 
+  ip_address,
+  lead(ip_address,1) over(partition by account_id order by login) as ip2,
+  login, 
+  logout,
+  lead(login,1) over(partition by account_id order by login ) as login2
+  from logInfo ) a
+where login2 <= logout  and ip_address!= ip2
+
+# where后可以做<,>,=这类运算，可以跟select中没有的，只有原table里有就成
