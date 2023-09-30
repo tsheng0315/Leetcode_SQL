@@ -1,16 +1,67 @@
-select  
-    player_id,
-    player_name,
-    sum(player_id= Wimbledon)+sum(player_id = Fr_open)+sum(player_id = US_open)+sum(player_id = AU_open) as grand_slams_count
-from 
-    Players 
-    join Championships
-    ON 
-    player_id=Wimbledon 
-    or player_id=Fr_open
-    or player_id=US_open 
-    or player_id=AU_open 
-group by player_id
+https://leetcode.com/problems/grand-slam-titles/
+
+# Write your MySQL query statement below
+
+# select 
+#     player_id,
+#     player_name,
+#     sum(case when player_id = Wimbledon then 1 else 0 end +
+#         case when player_id = Fr_open then 1 else 0 end +
+#         case when player_id = US_open then 1 else 0 end +
+#         case when player_id = Au_open then 1 else 0 end ) as grand_slams_count 
+# from Players cross join Championships
+# GROUP BY player_id, player_name
+# having grand_slams_count > 0
+
+
+# cross join 不用on条件 生成3*3 
+# sum(case when player_id = 'Wimbledon' then 1 else 0 end x--> 字母不用加引号
+# sum(case when player_id = Wimbledon then 1 else 0 end 
+# 可以case when else end + case when else end
+# having 不可以用where, 因为where会先执行，此时还没生成要用的column
+
+# 或者用subquery
+# SELECT * 
+# FROM (
+#   SELECT 
+#    player_id,
+#    player_name,
+#    SUM( CASE WHEN player_id = Wimbledon THEN 1 ELSE 0 END +
+#         CASE WHEN player_id = Fr_open THEN 1 ELSE 0 END +
+#         CASE WHEN player_id = US_open THEN 1 ELSE 0 END +
+#         CASE WHEN player_id = Au_open THEN 1 ELSE 0 END ) AS grand_slams_count
+#   FROM Players CROSS JOIN Championships GROUP BY player_id, player_name ) T
+# WHERE grand_slams_count > 0
+
+# select 
+#     player_id, 
+#     player_name,
+#     count(player_id = Wimbledon)+
+#     count(player_id = Fr_open)+
+#     count(player_id = US_open)+
+#     count(player_id = AU_open )
+#     as grand_slams_count
+# from 
+#     players join Championships
+#     ON player_id=Wimbledon 
+#         or player_id=Fr_open 
+#         or player_id=US_open 
+#         or player_id=Au_open
+# group by player_id
+
+# select  
+#     player_id,
+#     player_name,
+#     sum(player_id= Wimbledon)+sum(player_id = Fr_open)+sum(player_id = US_open)+sum(player_id = AU_open) as grand_slams_count
+# from 
+#     Players 
+#     join Championships
+#     ON 
+#     player_id=Wimbledon 
+#     or player_id=Fr_open
+#     or player_id=US_open 
+#     or player_id=AU_open 
+# group by player_id
 
 with cte as (
 select wimbledon as id from championships
