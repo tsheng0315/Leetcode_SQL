@@ -1,0 +1,15 @@
+
+with cte as (select transaction_id,
+    rank() over(partition by cast(day AS date) order by amount desc) as rk
+from
+    Transactions)
+
+select transaction_id
+from cte
+where rk =1
+order by transaction_id
+
+
+# DATE(day)-> just date, without hour,minutes
+# or
+# cast(xxx as date) 
