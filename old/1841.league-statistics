@@ -1,0 +1,44 @@
+
+with cte as (select home_team_id as team_id, home_team_goals, away_team_goals
+from Matches
+
+union all
+
+select away_team_id as team_id, away_team_goals , home_team_goals
+from Matches)
+
+# select *,
+# case 
+# when home_team_goals > away_team_goals then 3 
+# when home_team_goals = away_team_goals then 1
+# else 0
+# end as points
+# from cte
+
+# select *,
+# sum(case 
+# when c.home_team_goals > c.away_team_goals then 3 
+# when c.home_team_goals = c.away_team_goals then 1
+# else 0
+# end) as points
+# from cte c left join Teams t
+# on  c.team_id = t.team_id
+# group by t.team_id
+
+select 
+t.team_name, 
+count(t.team_id) as matches_played,
+sum(case 
+when c.home_team_goals > c.away_team_goals then 3 
+when c.home_team_goals = c.away_team_goals then 1
+else 0
+end) as points,
+sum(c.home_team_goals) as goal_for,
+sum(c.away_team_goals) as goal_against,
+(sum(c.home_team_goals)-sum(c.away_team_goals)) as goal_diff
+from cte c left join Teams t
+on  c.team_id = t.team_id
+group by t.team_id
+order by points desc, goal_diff desc, team_name asc
+
+
