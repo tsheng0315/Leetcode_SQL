@@ -1,0 +1,63 @@
+https://leetcode.com/problems/find-interview-candidates/description/
+# select 
+# contest_id,
+# gold_medal as g0,
+# silver_medal as s0,
+# bronze_medal as b0,
+# lead(gold_medal,1) over (ORDER BY contest_id) as g1,
+# lead(silver_medal,1) over (ORDER BY contest_id) as s1,
+# lead(bronze_medal,1)  over (ORDER BY contest_id) as b1,
+# lead(gold_medal,2) over (ORDER BY contest_id) as g2,
+# lead(silver_medal,2) over (ORDER BY contest_id) as s2,
+# lead(bronze_medal,2) over (ORDER BY contest_id) as b2
+# from Contests
+
+with cte as (select 
+contest_id,
+gold_medal as g0,
+silver_medal as s0,
+bronze_medal as b0,
+lead(gold_medal,1) over (ORDER BY contest_id) as g1,
+lead(silver_medal,1) over (ORDER BY contest_id) as s1,
+lead(bronze_medal,1)  over (ORDER BY contest_id) as b1,
+lead(gold_medal,2) over (ORDER BY contest_id) as g2,
+lead(silver_medal,2) over (ORDER BY contest_id) as s2,
+lead(bronze_medal,2) over (ORDER BY contest_id) as b2
+from Contests)
+
+select
+    DISTINCT name, mail
+from 
+    Users u 
+join cte 
+    on u.user_id in (g0,s0,b0)
+    and u.user_id in (g1,s1,b1) 
+    and u.user_id in (g2,s2,b2)
+
+union
+
+select name, mail
+from 
+    Contests 
+left join 
+    Users 
+    on gold_medal =  user_id
+    group by user_id
+    having count(*)>=3
+
+
+
+# select u.name, u.mail
+# from Contests c, Users u
+# where u.user_id = c.gold_medal
+# group by u.user_id
+# having count(contest_id)>=3 
+
+# union 
+
+# select  u.name, u.mail
+# from Users u , Contests c1 , Contests c2, Contests c3
+# where u.user_id in  (c1.gold_medal, c1.silver_medal, c1.bronze_medal)
+#       and u.user_id in  (c2.gold_medal, c2.silver_medal, c2.bronze_medal)
+#       and u.user_id in  (c3.gold_medal, c3.silver_medal, c3.bronze_medal)
+#       and c1.contest_id-1 = c2.contest_id and c2.contest_id-1 = c3.contest_id
