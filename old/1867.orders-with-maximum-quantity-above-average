@@ -1,0 +1,29 @@
+# Write your MySQL query statement below
+
+with cte as (
+select
+    order_id,
+    avg(quantity) as avg_n,
+    max(quantity) as max_n
+from OrdersDetails
+group by order_id)
+
+select
+order_id
+from cte
+where max_n > 
+    (select max(avg_n) from cte )
+
+
+# where要这么包一下
+# where max_n > 
+#     (select max(avg_n) from cte )
+
+# select 
+# order_id
+# from cte
+# having max_n > max(avg_n)
+
+# where 是对每条record逐行筛选
+# having是对整个group做筛选
+# having后跟的column需要在select中先select出来, where不用
