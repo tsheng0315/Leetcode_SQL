@@ -1,0 +1,79 @@
+# Write your MySQL query statement below
+# select
+# account_id,
+# if(type ='Creditor', amount, 0) as income,
+# month(day) as month
+# from Transactions
+# order by account_id, month
+
+# select
+# account_id,
+# sum(if(type ='Creditor', amount, 0)) as income,
+# month(day) as month
+# from Transactions
+# group by account_id, month
+# order by account_id, month
+
+# with cte as (select
+# account_id,
+# sum(if(type ='Creditor', amount, 0)) as income,
+# month(day) as month
+# from Transactions
+# group by account_id, month
+# order by account_id, month),
+
+# # select account_id, month, income,
+# # lead(income,1) over(partition by account_id order by month ) as income2
+# # from cte
+
+# cte2 as (select account_id, month, income,
+# lead(income,1) over(partition by account_id order by month ) as income2,
+# lead(month,1) over(partition by account_id order by month ) as month2
+# from cte)
+
+# select distinct c.account_id
+# from cte2 c
+# left join Accounts a
+#     on c.account_id = a.account_id
+# where c.income > a.max_income 
+#     and c.income2 > a.max_income
+#     and c.month +1= c.month2
+
+######### method2
+with cte as (select 
+    t.account_id,
+    date_format(t.day, '%Y%m') as month1,
+    sum(t.amount) as income,
+    a.max_income 
+from 
+    Transactions t 
+    left join 
+    Accounts a
+    on t.account_id = a.account_id
+where 
+    t.type = 'Creditor' 
+    # and 
+    # sum(t.amount) > a.max_income
+group by t.account_id, date_format(t.day,'%Y%m')
+having sum(t.amount) > a.max_income
+order by t.account_id),
+
+c2 as (select
+    account_id,
+    month1,
+    income,
+    lead(month1,1) over(partition by account_id order by month1) as month2,
+    lead(income,1) over(partition by account_id order by month1) as income2
+from cte)
+
+select 
+    distinct account_id
+from c2
+where period_diff(month1, month2) = -1
+
+
+
+
+# having 在order by前面
+# 聚合条件放在having里，不能放在where中，因为where在group by之前执行，聚合条件放在where中都没形成组
+# period_diff(month1, month2) = -1
