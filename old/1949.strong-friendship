@@ -1,0 +1,45 @@
+# 再做
+# 如何找strong friend, 如何join tables，思路很重要
+
+# Write your MySQL query statement below
+
+with c as (select
+    *
+from Friendship 
+union all
+select
+    user2_id,
+    user1_id 
+from Friendship)
+
+##### correct
+# select  
+#     f1.user1_id,
+#     f1.user2_id,
+#     count(*) as common_friend
+    
+# from Friendship f1 
+# left join c f2
+#     on f1.user2_id = f2.user1_id
+# left join c f3
+#     on f1.user1_id = f3.user1_id
+# where f2.user2_id = f3.user2_id
+# group by f1.user1_id, f1.user2_id
+# having count(*) >= 3
+
+### incorrect
+select 
+# c1.user1_id, c2.user2_id,
+# count(*) as common_friend 
+*
+from c c1 
+    left join
+    c c2 
+    on c1.user2_id = c2.user1_id
+    where c1.user1_id < c2.user2_id
+    # group by c1.user1_id, c2.user2_id
+    # having count(*) >= 3
+    order by c1.user1_id, c2.user2_id
+
+# 您的case有可能table1的user1和table2的user2不是朋友 只是有中间朋友
+# 思考如何找strong friend, 如何join tables，思路很重要
