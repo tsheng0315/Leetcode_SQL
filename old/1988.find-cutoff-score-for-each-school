@@ -1,0 +1,22 @@
+# with cte as (select *,
+# rank() over (partition by s.school_id order by e.student_count desc, score) as rk
+# from Schools s 
+#     left join 
+#     Exam e
+#     on s.capacity >= e.student_count
+#     order by s.capacity)
+    
+# select school_id, ifnull(score, -1) as score
+# from cte
+# where rk = 1
+
+select 
+    s.school_id, 
+    ifnull(min(score),-1) as score 
+from Schools s 
+    left join 
+    Exam e
+    on s.capacity >= e.student_count
+    group by s.school_id
+
+# 思路很重要，left join on xxx≥ xxx
