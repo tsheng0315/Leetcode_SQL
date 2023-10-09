@@ -1,0 +1,22 @@
+
+# conversion rate -3
+# never visited ->B
+# conversation rate 
+
+select m.member_id, m.name,
+(case 
+when 100 *count(p.charged_amount)/count(v.visit_id) >=80 then "Diamond"
+when 100 *count(p.charged_amount)/count(v.visit_id) >=50 
+    and 100 *count(p.charged_amount)/count(v.visit_id) <80 then "Gold"
+when 100 *count(p.charged_amount)/count(v.visit_id) <50 then "Silver"
+when count(v.visit_id) = 0 then "Bronze"
+end) as category
+from 
+    Members m 
+    left join Visits v on m.member_id = v.member_id
+    left join Purchases p on v.visit_id = p.visit_id
+group by m.member_id
+
+
+# case when 中的条件可以不类似
+# case when (else后不可以空) end
