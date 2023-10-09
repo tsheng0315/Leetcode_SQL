@@ -1,0 +1,34 @@
+# Write your MySQL query statement below
+############## 多重cte
+# with cte as (
+# select departure_airport as airport_id, flights_count 
+# from Flights
+# union all
+# select arrival_airport, flights_count 
+# from Flights),
+
+# c2 as (select airport_id, sum(flights_count) as ct
+# from cte
+# group by airport_id )
+
+# select airport_id
+# from c2
+# where ct = (select max(ct) from c2)
+
+######### rank() over(order by sum() )
+with cte as (
+select departure_airport as airport_id, flights_count 
+from Flights
+union all
+select arrival_airport, flights_count 
+from Flights),
+
+c2 as (select
+airport_id,
+rank() over(order by sum(flights_count) desc) as rk
+from cte
+group by airport_id)
+
+select airport_id
+from c2
+where rk =1
