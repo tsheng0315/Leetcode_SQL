@@ -1,0 +1,11 @@
+# select ids
+# years_of_exp >=2
+# sum(score) >15 
+ 
+select c.candidate_id
+from Candidates c 
+    right join Rounds r 
+    on c.interview_id = r.interview_id
+where c.years_of_exp >= 2
+group by r.interview_id 
+having sum(r.score) > 15
