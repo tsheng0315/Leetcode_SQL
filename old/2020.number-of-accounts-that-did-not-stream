@@ -1,0 +1,15 @@
+
+select count(*) as accounts_count 
+from Subscriptions sub 
+    left join Streams stm
+    on sub.account_id = stm.account_id
+where year(sub.start_date) = 2021 and year(stm.stream_date) != 2021
+ or year(sub.end_date) = 2021 and year(stm.stream_date) != 2021
+
+
+# where 中and 和or的用法
+# WHERE (YEAR(start_date) = 2021 OR YEAR(end_date) = 2021) 
+#         AND YEAR(stream_date) <> 2021
+
+# where year(sub.start_date) = 2021 and year(stm.stream_date) != 2021
+#  or year(sub.end_date) = 2021 and year(stm.stream_date) != 2021
