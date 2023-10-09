@@ -1,0 +1,11 @@
+
+# account_id asc, day
+
+select
+  account_id,
+  day,      
+sum(if(type = 'Deposit', amount,-amount) ) over (partition by account_id order by day) as balance 
+from Transactions
+
+
+# return running result: sum() over(partition by order by)
