@@ -1,0 +1,31 @@
+
+# t0 -> just t0
+# otherwise ->t1
+
+# select order_id
+# from Orders
+# where order_type = 0
+
+# select
+# order_id, customer_id, order_type
+# from Orders 
+# where order_type = 0
+
+# union
+
+# select
+# order_id, customer_id, order_type
+# from orders
+# where customer_id  not in (select customer_id  from Orders where order_type = 0)
+
+
+with cte as (select order_id , customer_id, order_type ,
+rank() over(partition by customer_id order by order_type ) as rk
+from orders)
+
+select order_id , customer_id, order_type
+from cte
+where rk =1
+
+
+# 这道题用union解法的话思路很重要，别绕晕
