@@ -1,0 +1,18 @@
+
+with crk as (select 
+    first_col,
+    row_number() over(order by first_col) as 1rk,
+    second_col,
+    row_number() over(order by second_col desc ) as 2rk
+from Data)
+
+
+
+select c1.first_col, c2.second_col
+from crk c1
+    join crk c2
+    on c1.1rk = c2.2rk
+    order by c1.first_col, second_col desc
+
+# row_number() 用法(和rank()区别)
+# 从按照不同顺序选record得join, 用两个表操作
