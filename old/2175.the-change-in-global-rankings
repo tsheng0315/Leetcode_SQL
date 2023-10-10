@@ -1,0 +1,29 @@
+
+# # rank past
+# # rank current
+# # diff
+
+
+# with c1 as (
+#     select team_id, name, points , row_number() over(order by points desc, name ) as rk
+#     from TeamPoints),
+
+# c2 as (
+#     select t.team_id, t.name, 
+#     row_number() over (order by (points + points_change) desc, name) as current_rk
+#     from TeamPoints t
+#         left join PointsChange p 
+#         on t.team_id = p.team_id)
+
+# select
+#     c1.team_id, c1.name,  cast(c1.rk as signed)-cast(c2.current_rk as signed)  as rank_diff
+# from c1 join c2 
+#     on c1.team_id = c2.team_id 
+
+# cast( xxx as signed) 转成数字
+# 因为break the tie-> row_number() 不能用rank()
+
+####一表完成写法，思路一样的
+SELECT t.team_id, name,  CAST(RANK() OVER (ORDER BY points DESC, name) AS SIGNED) - CAST(RANK() OVER (ORDER BY (points + points_change) DESC, name) AS SIGNED) AS rank_diff
+FROM TeamPoints AS t
+LEFT OUTER JOIN PointsChange AS p ON t.team_id = p.team_id;
