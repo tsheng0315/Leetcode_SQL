@@ -1,4 +1,3 @@
-# Write your MySQL query statement below
 
 # with cte as (select  b.bus_id,  b.arrival_time as b_time, p.passenger_id , p.arrival_time as p_time,
 # rank() over(partition by p.passenger_id order by  b.arrival_time ) as rk
@@ -20,7 +19,7 @@
 with cte as (select p.passenger_id, min(b.arrival_time) as bus_time
 from buses b join Passengers p 
     on p.arrival_time <= b.arrival_time
-    group by p.arrival_time)
+    group by p.passenger_id)  # group by 不能用p.arrival_time,因为目的是给每个passenger安排车，可能有同时来的passenger
 
 #再把passenger 对应到每辆车里
 select b.bus_id,
@@ -29,5 +28,4 @@ from Buses b
     left join cte c 
     on b.arrival_time = c.bus_time
     group by b.bus_id
-
-# 思路要清晰啊
+    order by b.bus_id
