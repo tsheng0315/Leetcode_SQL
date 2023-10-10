@@ -1,0 +1,33 @@
+# Write your MySQL query statement below
+
+# with cte as (select  b.bus_id,  b.arrival_time as b_time, p.passenger_id , p.arrival_time as p_time,
+# rank() over(partition by p.passenger_id order by  b.arrival_time ) as rk
+# from Buses b 
+#    right join Passengers p
+#     on p.arrival_time <= b.arrival_time),
+
+# c2 as (select bus_id,  passenger_id
+# from cte c
+#     where c.rk =1)
+
+# select b.bus_id, count(c2.passenger_id) as passengers_cnt
+# from c2 right join Buses b on c2.bus_id = b.bus_id
+# group by b.bus_id
+# order by b.bus_id
+
+
+# select passenger - right bus pair
+with cte as (select p.passenger_id, min(b.arrival_time) as bus_time
+from buses b join Passengers p 
+    on p.arrival_time <= b.arrival_time
+    group by p.arrival_time)
+
+#再把passenger 对应到每辆车里
+select b.bus_id,
+count(c.passenger_id) as passengers_cnt  # count里的内容不能随便count,会不一样
+from Buses b
+    left join cte c 
+    on b.arrival_time = c.bus_time
+    group by b.bus_id
+
+# 思路要清晰啊
