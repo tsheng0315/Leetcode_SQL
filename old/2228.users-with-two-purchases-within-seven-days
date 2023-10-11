@@ -1,0 +1,8 @@
+with cte as (select purchase_id, user_id, purchase_date,
+lead(purchase_date, 1) over(partition by user_id order by purchase_date) as purchase_date2
+from Purchases)
+
+select 
+distinct user_id
+from cte
+where datediff(purchase_date2,purchase_date) <=7
