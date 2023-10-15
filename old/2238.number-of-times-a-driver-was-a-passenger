@@ -1,0 +1,10 @@
+2238.number-of-times-a-driver-was-a-passenger
+
+
+with cte as (select distinct driver_id
+from rides)
+
+select cte.driver_id, count(r.driver_id) as cnt
+from cte left join rides r 
+on cte.driver_id = r.passenger_id 
+group by cte.driver_id 
