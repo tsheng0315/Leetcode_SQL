@@ -1,0 +1,21 @@
+with cte as (select product_id, count(order_id) as cnt, year(purchase_date) as y
+from Orders 
+group by product_id, y
+having cnt >=3
+order by product_id, y)
+
+# 法一：
+# cte2 as (select product_id, y,
+# lead(y) over(partition by product_id order by y)  as y2
+# from cte )
+
+# select distinct product_id
+# from cte2
+# where y+1 =y2
+
+# 法二： join费时间
+select distinct c1.product_id
+from cte c1 
+    join cte c2
+    on c1.product_id = c2.product_id 
+    and c1.y+1 = c2.y
