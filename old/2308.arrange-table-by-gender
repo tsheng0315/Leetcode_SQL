@@ -1,0 +1,18 @@
+with cte as (select user_id, gender,
+case 
+when gender = 'female' then 1
+when gender = 'other' then 2
+else 3
+end 
+as genderrk
+from Genders),
+
+cte2 as (select user_id ,gender, genderrk,
+rank() over(partition by gender order by user_id) as rk
+from cte)
+
+select user_id, gender
+from cte2
+order by rk, genderrk
+
+# order by 的顺序不同是有区别的，想好先order by谁
