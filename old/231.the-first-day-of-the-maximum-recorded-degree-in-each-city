@@ -1,0 +1,8 @@
+with cte as (select city_id, day, degree,
+rank()over(partition by city_id order by degree desc, day) as rk
+from Weather)
+
+
+select city_id, day, degree
+from cte
+where rk = 1
