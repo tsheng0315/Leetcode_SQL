@@ -1,0 +1,14 @@
+with cte as (select s.sale_id, s.user_id, s.product_id, sum(quantity) as quantity, p.price
+
+from Sales s join Product p 
+    on s.product_id = p.product_id
+group by s.user_id, s.product_id),
+
+
+cte2 as (select user_id, product_id,
+rank() over(partition by user_id order by quantity * price desc ) as rk
+from cte)
+
+select user_id, product_id
+from cte2
+where rk =1
