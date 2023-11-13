@@ -1,0 +1,18 @@
+
+with cte as (select employee_id, in_time , out_time,  timestampDIFF(second, in_time, out_time) as sec
+from Logs ),
+
+cte2 as (select employee_id, ceiling(sum(sec)/60) as min
+from cte
+group by employee_id),
+
+cte3 as (select employee_id, min/60 as hr
+from cte2)
+
+select e.employee_id 
+from Employees e left join cte3
+    on e.employee_id = cte3.employee_id 
+where e.needed_hours >ifnull(cte3.hr,0)
+
+
+# 学个函数：timestampDIFF(second,
