@@ -1,0 +1,20 @@
+with cte as (select flight_id, count(flight_id) as ct
+from  Passengers p
+group by flight_id )
+
+select f.flight_id,
+case when f.capacity > c.ct then c.ct 
+     when f.capacity <= c.ct then f.capacity 
+     else 0 end as booked_cnt,
+case when f.capacity > c.ct then 0 
+     when f.capacity <= c.ct then c.ct-f.capacity 
+     else 0 end as waitlist_cnt
+from cte c
+    right join flights f
+    on  c.flight_id = f.flight_id
+order by f.flight_id 
+
+
+# case when 
+# when 想清楚什么情况才能用else, null的情况怎么处理
+# else
