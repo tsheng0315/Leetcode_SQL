@@ -3,12 +3,15 @@ row_number()  over () as rn,
 case when drink is null then 0 else 1 end as inull
 from CoffeeShop),
 
-cte2 as (select  id , drink ,
-sum(inull) over(order by rn ) as sum_null
+cte2 as (select  id , drink, rn,
+# sum(inull) over(order by rn ) as sum_null
+count(drink) over(order by rn) as sum_null
 from cte)
 
 select id , 
-first_value(drink ) over(partition by sum_null) as drink
+first_value(drink) over(partition by sum_null order by rn) as drink
 from cte2
 
-#解法神奇
+
+# 神奇的解法
+# count(null) 不会算进去
