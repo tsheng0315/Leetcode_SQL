@@ -1,0 +1,16 @@
+with c1 as (select *,
+ceil(minute/6) as intervalno
+from Orders)
+
+# select distinct intervalno as interval_no, 
+# sum(order_count) over (partition by intervalno) as total_orders
+# from c1
+# order by interval_no
+
+select distinct intervalno as interval_no, 
+sum(order_count) as total_orders
+from c1
+group by interval_no
+order by interval_no
+
+# 构造ceil(minute/6) as intervalno
