@@ -1,0 +1,12 @@
+select 'bull' as word, count(file_name)  as count
+from  Files 
+where  content  like '% bull %'
+
+union all
+
+select 'bear' as word, count(file_name)  as count
+from  Files 
+where  content  like '% bear %'
+
+
+#where  content  like '% bear %'
