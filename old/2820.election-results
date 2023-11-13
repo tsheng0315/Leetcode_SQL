@@ -1,0 +1,21 @@
+
+with c1 as (select voter, 
+if(candidate is not null,1,0) as ct1,
+sum(candidate is not null) over(partition by voter ) as ct
+from Votes),
+
+c2 as (select voter, ct1/ct as pct
+from c1
+group by voter),
+
+c3 as (select v.candidate, sum(c2.pct), 
+rank() over (order by sum(c2.pct) desc) as rk
+from votes v join c2
+    on v.voter = c2.voter
+    where v.candidate is not null
+group by v.candidate )
+
+select candidate
+from c3
+where rk = 1
+order by candidate 
