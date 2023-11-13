@@ -1,0 +1,10 @@
+with cte as (select user_id,  created_at ,
+lead(created_at) over (partition by user_id  order by created_at ) created_at2
+from Users 
+order by user_id, created_at)
+
+
+select user_id 
+from cte
+where datediff(created_at2, created_at)<=7
+group by user_id
