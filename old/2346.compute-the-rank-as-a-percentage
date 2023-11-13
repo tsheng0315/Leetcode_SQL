@@ -1,0 +1,14 @@
+# with cte as (select student_id ,department_id, mark,
+# rank() over(partition by department_id order by mark desc ) as rk,
+# count( student_id) over(partition by department_id ) as ct
+# from Students)
+
+
+# select student_id ,department_id ,
+# round(100*ifnull((rk-1)/(ct-1),0),2) as percentage
+# from cte
+
+#percent_rank()很好用诶！
+SELECT student_id, department_id, 
+    ROUND(100*PERCENT_RANK() OVER (PARTITION BY department_id ORDER BY mark DESC), 2) AS percentage 
+FROM Students
