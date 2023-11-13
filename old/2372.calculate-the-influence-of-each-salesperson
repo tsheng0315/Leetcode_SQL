@@ -1,0 +1,8 @@
+select s.salesperson_id, s.name  ,
+ifnull(sum(s2.price),0) as total
+from Salesperson s
+  left join Customer c
+    on s.salesperson_id = c.salesperson_id
+  left join Sales s2
+    on c.customer_id = s2.customer_id
+    group by s.salesperson_id
