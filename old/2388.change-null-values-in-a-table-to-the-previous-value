@@ -1,0 +1,14 @@
+with cte as (select id , drink ,
+row_number()  over () as rn,
+case when drink is null then 0 else 1 end as inull
+from CoffeeShop),
+
+cte2 as (select  id , drink ,
+sum(inull) over(order by rn ) as sum_null
+from cte)
+
+select id , 
+first_value(drink ) over(partition by sum_null) as drink
+from cte2
+
+#解法神奇
