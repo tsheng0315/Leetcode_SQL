@@ -1,0 +1,19 @@
+
+with cte as (select u.seller_id, i.item_id
+from Users u 
+    join Orders o on u.seller_id = o.seller_id
+    join Items i on o.item_id = i.item_id and u.favorite_brand !=i.item_brand
+group by u.seller_id, i.item_id 
+order by u.seller_id),
+
+c2 as (select seller_id, count(item_id) as num_items
+from cte
+group by seller_id),
+
+c3 as (select seller_id,num_items,
+rank() over(order by num_items desc ) as rk
+from c2)
+
+select seller_id,num_items
+from c3
+where rk =1
